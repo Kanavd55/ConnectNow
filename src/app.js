@@ -2,9 +2,30 @@ const express = require('express')
 
 const app = express();
 
-app.get('/use?r',(req,res)=>{
-    res.send({firstName:'Kanav',lastName:'Dahat'})
+app.use('/user',(req,res,next)=>{
+    const isAdmin=false;
+    if(isAdmin){
+        next()
+    }else{
+        res.json({
+            status: 401,
+            message: 'unauthorized'
+        })
+    }
+})
+
+app.get('/user',(req,res,next)=>{
+    next()
+    //res.send("response")
+    console.log("Hi")
+},(req,res,next)=>{
+    //res.send('2nd response')
+    next();
 })  
+
+app.get('/user',(req,res)=>{
+    res.send("3rd response")
+})
 
 app.post('/user',(req,res)=>{
     console.log("data added to db")
